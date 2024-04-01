@@ -1,101 +1,88 @@
 import sys
 import random
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit, QMessageBox
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt5.QtCore import QTimer
 
-class MemoryGame(QWidget):
+from design import Ui_Form
+
+class MemoryGame(QMainWindow, Ui_Form):
     def __init__(self):
         super().__init__()
+        self.setupUi(self)
 
         self.sequence = []
         self.user_input = ''
-        self.sequence_str = ''
         self.level = 1
         self.max_level = 15
-        self.initUI()
+        self.remaining_time = 0
         self.timer = QTimer(self)
-        self.timer.timeout.connect(self.remember_time)
+        self.timer.timeout.connect(self.update_timer)
 
-    def initUI(self):
-        self.setWindowTitle('Memory Game')
-        self.setGeometry(100, 100, 400, 200)
-
-        self.info_label = QLabel('Press "Start" to begin', self)
-        self.error_label = QLabel('', self)
-
-        self.start_button = QPushButton('Start', self)
         self.start_button.clicked.connect(self.start_game)
+        self.user_input_field.returnPressed.connect(self.check_sequence)  # Обработка нажатия Enter
 
-        self.user_input_field = QLineEdit(self)
-        self.user_input_field.setPlaceholderText('Enter the sequence')
-        self.user_input_field.setReadOnly(False)
 
-        self.submit_button = QPushButton('Submit', self)
-        self.submit_button.clicked.connect(self.check_sequence)
-
-        layout = QVBoxLayout()
-        layout.addWidget(self.info_label)
-        layout.addWidget(self.error_label)
-        layout.addWidget(self.start_button)
-        layout.addWidget(self.user_input_field)
-        layout.addWidget(self.submit_button)
-
-        self.setLayout(layout)
 
     def start_game(self):
         self.sequence = []
         self.user_input = []
         self.level = 1
-        self.error_label.clear()
-        self.info_label.setText(f'Level {self.level}')
+        self.timer_label.setText("Осталось")
+        self.start_button.hide()
+
         self.generate_sequence()
         self.display_sequence()
+        self.start_button.hide()
 
     def generate_sequence(self):
         self.sequence = [random.randint(1, 9) for _ in range(self.level)]
-        self.sequence_str = ' '.join(map(str, self.sequence))
 
     def display_sequence(self):
-        self.info_label.setText(self.sequence_str)
+        self.info_label.setText("Запомните последовательность")
+        sequence_str = ' '.join(map(str, self.sequence))
+        self.seq_label.setText(sequence_str)
         self.user_input_field.clear()
-        self.user_input_field.setFocus()
         self.user_input_field.setReadOnly(True)
-        self.timer.start(5000 + self.level * 2000)
+        self.user_input_field.hide()
+        self.timer_label_2.show()
+        self.lvl_label.setText(f'Уровень {self.level}  ')
+        self.remaining_time = 5 + self.level * 2  # Устанавливаем начальное время
+        self.update_timer()  # Обновляем значение таймера
+        self.timer.start(1000)  # Запускаем таймер
 
+    def update_timer(self):
+        self.remaining_time -= 1
+        self.timer_label_2.setText(f'{self.remaining_time} сек')
+        if self.remaining_time == 0:
+            self.timer.stop()  # Останавливаем таймер, когда время истекло
+            self.remember_time()
 
     def remember_time(self):
         self.user_input_field.setReadOnly(False)
-        self.user_input_field.setFocus()
-        self.info_label.setText(f'Level {self.level}')
-        self.error_label.clear()
+        self.user_input_field.show()
+        self.info_label.setText('Введите последовательность')
+        self.seq_label.setText("")
+        self.timer_label_2.hide()
         self.user_input_field.clear()
-
-
     def check_sequence(self):
         user_input = self.user_input_field.text()
         correct_sequence = ''.join(map(str, self.sequence))
 
         if user_input == correct_sequence:
-
             self.level += 1
             if self.level > self.max_level:
                 self.game_over('Congratulations! You completed all levels!')
             else:
                 self.generate_sequence()
                 self.display_sequence()
-            self.error_label.clear()
         else:
-            self.error_label.setText('Incorrect sequence. Try again.')
-            self.user_input_field.clear()
-            self.user_input_field.setFocus()
-            self.level = 1
+            self.game_over('Incorrect sequence. Try again.')
 
     def game_over(self, message):
         QMessageBox.information(self, 'Game Over', message)
-        self.info_label.setText('Press "Start" to play again')
-        self.submit_button.setEnabled(False)
+        self.info_label.setText('Press "start" to play again')
         self.user_input_field.setReadOnly(True)
-        self.user_input_field.clear()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
