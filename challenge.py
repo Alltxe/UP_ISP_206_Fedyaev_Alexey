@@ -1,17 +1,18 @@
 import random
 import csv
+import os
 import datetime
-from PyQt5.QtWidgets import QMainWindow, QStackedWidget
+from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QTimer
-from templates.challenge import UI_Form
+from templates.challenge import Ui_Form
 
 
-class Challenge(QMainWindow, UI_Form):
+class Challenge(QWidget, Ui_Form):
     def __init__(self, menu_callback):
         super().__init__()
         self.setupUi(self)
         self.menu_callback = menu_callback
-        self.return_btn.clicked.connect(self.return_to_menu)
+        self.return_btn.clicked.connect(self.save_results)
 
         self.sequence = []
         self.user_input = ''
@@ -21,9 +22,15 @@ class Challenge(QMainWindow, UI_Form):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_timer)
         self.game_started = False
+        self.check_file('results.csv')
 
         self.start_button.clicked.connect(self.start_game)
         self.user_input_field.returnPressed.connect(self.check_sequence)  # Обработка нажатия Enter
+
+    def check_file(self, filename):
+        if not os.path.exists(filename):
+            with open(filename, 'w', newline='', encoding='utf-8'):
+                pass
 
     def return_to_menu(self):
         if self.game_started:

@@ -1,9 +1,9 @@
 import csv
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QWidget
 from templates.results import Ui_Form
 
 
-class Result(QMainWindow, Ui_Form):
+class Result(QWidget, Ui_Form):
     def __init__(self, menu_callback):
         super().__init__()
         self.setupUi(self)

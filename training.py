@@ -1,11 +1,10 @@
 import sys
 import random
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QTimer
 from templates.training import Ui_Form
 
-
-class Training(QMainWindow, Ui_Form):
+class Training(QWidget, Ui_Form):
     def __init__(self, menu_callback):
         super().__init__()
         self.setupUi(self)
@@ -47,6 +46,7 @@ class Training(QMainWindow, Ui_Form):
                     self.level = int(self.lvl_edit.text())
             except:
                 print('Введенное значени не является числом')
+
     def generate_sequence(self):
         self.get_lvl()
         self.sequence = [random.randint(1, 9) for _ in range(self.level)]
@@ -93,12 +93,3 @@ class Training(QMainWindow, Ui_Form):
             self.error_count += 1
             self.generate_sequence()
             self.display_sequence()
-
-
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    game = Training()
-    game.show()
-    sys.exit(app.exec_())

@@ -15,32 +15,36 @@ class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(800, 600)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
-        Form.setSizePolicy(sizePolicy)
-        Form.setMinimumSize(QtCore.QSize(800, 600))
-        Form.setMaximumSize(QtCore.QSize(800, 600))
+
         font = QtGui.QFont()
         font.setPointSize(9)
         Form.setFont(font)
-        self.return_btn = QtWidgets.QPushButton(Form)
-        self.return_btn.setGeometry(QtCore.QRect(630, 550, 162, 41))
-        self.return_btn.setObjectName("return_btn")
-        self.title_label = QtWidgets.QLabel(Form)
-        self.title_label.setGeometry(QtCore.QRect(230, 30, 337, 78))
+        self.widget = Form
+        self.widget.setGeometry(QtCore.QRect(15, 10, 781, 571))
+        self.widget.setObjectName("widget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.widget)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.title_label = QtWidgets.QLabel(self.widget)
         font = QtGui.QFont()
         font.setPointSize(14)
         self.title_label.setFont(font)
         self.title_label.setAlignment(QtCore.Qt.AlignCenter)
         self.title_label.setObjectName("title_label")
-        self.label = QtWidgets.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(45, 110, 710, 311))
+        self.verticalLayout.addWidget(self.title_label)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem)
+        self.label = QtWidgets.QLabel(self.widget)
         font = QtGui.QFont()
         font.setPointSize(14)
         self.label.setFont(font)
         self.label.setObjectName("label")
+        self.verticalLayout.addWidget(self.label)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem1)
+        self.return_btn = QtWidgets.QPushButton(self.widget)
+        self.return_btn.setObjectName("return_btn")
+        self.verticalLayout.addWidget(self.return_btn)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -48,7 +52,6 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.return_btn.setText(_translate("Form", "Вернуться в меню"))
         self.title_label.setText(_translate("Form", "Правила"))
         self.label.setText(_translate("Form", "Тренировочный режим: Вы можете тренироваться на любом \n"
 "доступном уровне без ограничений.\n"
@@ -56,3 +59,4 @@ class Ui_Form(object):
 "должны точно воспроизвести последовательность для перехода \n"
 "на следующий уровень.\n"
 "С каждым уровнем длина последовательности увеличивается на 1."))
+        self.return_btn.setText(_translate("Form", "Вернуться в меню"))
