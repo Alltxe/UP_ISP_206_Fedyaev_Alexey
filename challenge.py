@@ -4,7 +4,7 @@ import os
 import datetime
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QTimer
-from templates.challenge import Ui_Form
+from templates.challenge_ui import Ui_Form
 
 
 class Challenge(QWidget, Ui_Form):

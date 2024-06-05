@@ -1,6 +1,6 @@
 import csv
 from PyQt5.QtWidgets import QWidget
-from templates.results import Ui_Form
+from templates.result_ui import Ui_Form
 
 
 class Result(QWidget, Ui_Form):

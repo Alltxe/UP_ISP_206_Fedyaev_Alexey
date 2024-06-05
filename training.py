@@ -2,7 +2,7 @@ import sys
 import random
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QTimer
-from templates.training import Ui_Form
+from templates.training_ui import Ui_Form
 
 class Training(QWidget, Ui_Form):
     def __init__(self, menu_callback):

@@ -2,7 +2,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedWidget, QVBoxLayout, QWidget
 from challenge import Challenge
 from training import Training
-from templates.main_menu import Ui_Form
+from templates.main_ui import Ui_Form
 from result import Result
 from rules import Rules
 

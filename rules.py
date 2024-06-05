@@ -1,6 +1,5 @@
-import csv
 from PyQt5.QtWidgets import QWidget
-from templates.rules import Ui_Form
+from templates.rules_ui import Ui_Form
 
 
 class Rules(QWidget, Ui_Form):
